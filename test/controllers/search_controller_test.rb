@@ -7,7 +7,7 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
 
   setup do
     puts 'Importing Records is taking:'
-    puts Benchmark.measure {  
+    puts Benchmark.measure {
       ImportRecipes.new.perform_json
     }
   end
@@ -16,12 +16,12 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
     @search_params = 'bacon,eggs,cucumber,potato'
 
     puts 'Search is taking:'
-    puts Benchmark.measure {  
+    puts Benchmark.measure {
       @result = SearchRecipes.new(@search_params).perform_json
     }
     assert_not @result
       .first[:ingredients]
-      .collect{|k| k['name']}
+      .collect { |k| k['name'] }
       .join.match(/#{@search_params.split(',').join("|")}/).blank?
   end
 end

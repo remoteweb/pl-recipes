@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-task :import_recipes, [:import_type] => :environment do |t, args|
+task :import_recipes, [:import_type] => :environment do |_t, args|
   case args[:import_type]
   when 'standard'
     ImportRecipes.new.perform

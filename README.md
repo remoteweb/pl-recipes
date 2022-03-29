@@ -1,24 +1,38 @@
-# README
+# DinnerRecipes v0.1-beta
+[![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://travis-ci.org/joemccann/dillinger)
+Recipes Finder v0.9 is an awesome app offering users to search through relevant recipes for dinner, based on the available ingredients currently at home.
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+You may check the app at
+https://pl-recipes-achamakiotis.herokuapp.com/
 
-Things you may want to cover:
+Stack:
+- Ruby 3.1.1
+- Rails 7.0
+- React 17.0.2
+- MySQL 8.0.28 (gem 0.5.3)
+- ReactDom 17.0.2
+- Minitest 5.15.0
 
-* Ruby version
+_Deployed on basic Heroku dyno with ClearDB_
 
-* System dependencies
+# Run project locally
+Prepare your system with the above mentioned dependencies. Depending your OS, you might
+need to add your architecture platform.
 
-* Configuration
+```
+bundle add --platform x86_64-linux
+```
 
-* Database creation
+--add-platform
+Add a new platform to the lockfile, re-resolving for the addition of that platform.
 
-* Database initialization
+Once you are have the env set, run the following.
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+```sh
+git clone git@github.com:remoteweb/pl-recipes-achamakiotis.git
+cd pl-recipes-achamakiotis
+bundle install
+rake test
+rake import_recipes\["json"\]
+./bin/dev
+```

@@ -110,17 +110,26 @@ class App extends React.Component{
                                     </Card.Description>
                                     </Card.Content>
                                     <Card.Content extra>
-                                    <a>
                                         <Grid>
                                             <Grid.Column width={2}>
                                                 <Icon name='time' />
                                             </Grid.Column>
                                             <Grid.Column width={13}>
                                                 Preperation Time: {recipy.prep_time} <br/>
-                                                Cooking Time: {recipy.cook_time}
+                                                Cooking Time: {recipy.cook_time} <br/>
                                             </Grid.Column>
                                         </Grid>
-                                    </a>
+                                        <Grid>
+                                            <Grid.Column width={2}>
+                                                <Icon name='info' />
+                                            </Grid.Column>
+                                            <Grid.Column width={13}>
+                                                Matched Ingredients: {recipy.matched_ingredients_count} <br/>
+                                                Non Matched Ingredients: {recipy.non_matched_ingredients_count} <br/>
+                                                Completeness: {recipy.completeness} %<br/>
+                                                Relevance: {recipy.relevance} <br/>
+                                            </Grid.Column>
+                                        </Grid>
                                     </Card.Content>
                                 </Card>                    
                             )

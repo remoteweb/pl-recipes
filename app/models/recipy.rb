@@ -14,5 +14,5 @@ class Recipy < ApplicationRecord
               with: /\.(gif|jpg|png)\z/i,
               message: 'must be a URL for GIF, JPG or PNG image.'
             }
-  serialize :jsonignredients, Hash 
+  serialize :jsonignredients, Hash
 end

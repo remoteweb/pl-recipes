@@ -21,7 +21,7 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
     }
     assert_not @result
       .first[:ingredients]
-      .collect{|k| k[:name]}
+      .collect{|k| k['name']}
       .join.match(/#{@search_params.split(',').join("|")}/).blank?
   end
 end

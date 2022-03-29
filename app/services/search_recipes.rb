@@ -108,7 +108,7 @@ class SearchRecipes
     ## Building the results
     ## Finds recipes including any of the ingredients in our discopal
 
-    recipes = Recipy.select{|r| YAML.load(r.jsoningredients).collect{|ingredient| ingredient[:name]}.select{|i| i.match(/bacon|eggs/)}.size > 0}
+    recipes = Recipy.select{|r| YAML.load(r.jsoningredients).collect{|ingredient| ingredient[:name]}.select{|i| i.match(/#{search_terms.join('|')}/)}.size > 0}
               # YAML.load(Recipy.first.jsoningredients).collect{|ingredient| ingredient[:name]}.select{|i| i.match(/flour|sugar/)}
 
     ## Scoring search results relevance
@@ -123,7 +123,7 @@ class SearchRecipes
       #   [sql_query_constructor('ingredients.name', 'NOT LIKE', 'AND')] + @search_sql_params
       # ).size
 
-      matched_ingredients_count = YAML.load(recipy.jsoningredients).collect{|ingredient| ingredient[:name]}.select{|i| i.match(/bacon|eggs/)}.size
+      matched_ingredients_count = YAML.load(recipy.jsoningredients).collect{|ingredient| ingredient[:name]}.select{|i| i.match(/#{search_terms.join('|')}/)}.size
       non_matched_ingredients_count = total_recipy_ingredients_count - matched_ingredients_count
       # Positive Points
       # matched_ingredients_count = recipy_ingredients.where(
@@ -145,7 +145,7 @@ class SearchRecipes
           complete: true,
           image_url: recipy.image_url,
           relevance: RANK_BASE + (matched_ingredients_count * 10) - ((search_terms_count - matched_ingredients_count) * 10),
-          ingredients: recipy_ingredients.collect{|i| {name: i[:name]}}
+          ingredients: recipy_ingredients.as_json
         }
         
         next
@@ -168,7 +168,7 @@ class SearchRecipes
         complete: false,
         image_url: recipy.image_url,
         relevance: RANK_BASE + (matched_ingredients_count.to_f * 10 + (matched_ingredients_count.to_f / total_recipy_ingredients_count) * 1000).round,
-        ingredients: recipy_ingredients.collect{|i| {name: i[:name]}}
+        ingredients: recipy_ingredients.as_json
       }
     end
 

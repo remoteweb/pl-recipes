@@ -6,7 +6,7 @@ task :import_recipes, [:import_type] => :environment do |t, args|
     ImportRecipes.new.perform
   when 'fast'
     ImportRecipes.new.perform_better
-  when 'serialized_jsons'
+  when 'json'
     ImportRecipes.new.perform_json
   end
 end

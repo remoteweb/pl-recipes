@@ -2,10 +2,10 @@
 
 require 'test_helper'
 
-class RecipyTest < ActiveSupport::TestCase  
+class RecipyTest < ActiveSupport::TestCase
   fixtures :recipes
 
-  test "Tests Recipy required info not blank" do
+  test 'Tests Recipy required info not blank' do
     recipy = Recipy.new
     assert recipy.invalid?
     assert recipy.errors[:title].any?
@@ -13,7 +13,7 @@ class RecipyTest < ActiveSupport::TestCase
     assert recipy.errors[:ratings].any?
   end
 
-  test "Tests Recipes for valid and invalid data" do
+  test 'Tests Recipes for valid and invalid data' do
     assert recipes(:valid_recipy).valid?
     assert_not recipes(:invalid_recipy).valid?
   end

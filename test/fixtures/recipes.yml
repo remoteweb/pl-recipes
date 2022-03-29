@@ -1,16 +1,14 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-one:
-  title: MyString
+valid_recipy:
+  title: Valid Recipy
   cook_time: 1
   prep_time: 1
   total_cooking_time: 1
   ratings: 9.99
   recipy_category: MyString
-  image_url: MyString
+  image_url: https://upload.wikimedia.org/wikipedia/commons/2/20/Bacon_%281%29.jpg
 
-two:
-  title: MyString
+invalid_recipy:
+  title: Invalid Recipy
   cook_time: 1
   prep_time: 1
   total_cooking_time: 1

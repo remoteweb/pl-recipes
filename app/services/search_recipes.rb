@@ -66,7 +66,6 @@ class SearchRecipes
           class: 'olive',
           complete: true,
           completeness: 100,
-          image_url: recipe.image_url,
           relevance: RANK_BASE +  (matched_ingredients_count * 10) - 
                                   ((search_terms_count - matched_ingredients_count) * 10),
           ingredients: recipe_ingredients.as_json
@@ -98,7 +97,6 @@ class SearchRecipes
           class: '',
           complete: false,
           completeness: (matched_ingredients_count.to_f / total_recipe_ingredients_count).round(4) * 100,
-          image_url: recipe.image_url,
           relevance: RANK_BASE + (
                                   (matched_ingredients_count.to_f * 10) + 
                                   (matched_ingredients_count.to_f / total_recipe_ingredients_count) * 1000).round,
@@ -125,7 +123,6 @@ class SearchRecipes
           class: 'olive',
           complete: true,
           completeness: 100,
-          image_url: recipe.image_url,
           relevance: RANK_BASE +  (matched_ingredients_count * 10) - 
                                   ((search_terms_count - matched_ingredients_count) * 10),
           ingredients: recipe_ingredients.as_json
@@ -154,7 +151,6 @@ class SearchRecipes
         class: '',
         complete: false,
         completeness: (matched_ingredients_count.to_f / total_recipe_ingredients_count).round(4) * 100,
-        image_url: recipe.image_url,
         relevance: RANK_BASE + (
                                 (matched_ingredients_count.to_f * 10) + 
                                 (matched_ingredients_count.to_f / total_recipe_ingredients_count) * 1000).round,
@@ -228,7 +224,6 @@ class SearchRecipes
           class: 'olive',
           complete: true,
           completeness: 100,
-          image_url: recipe.image_url,
           relevance: RANK_BASE +  (matched_ingredients_count * 10) - 
                                   ((search_terms_count - matched_ingredients_count) * 10),
           ingredients: recipe_ingredients.as_json
@@ -260,7 +255,6 @@ class SearchRecipes
           class: '',
           complete: false,
           completeness: (matched_ingredients_count.to_f / total_recipe_ingredients_count).round(4) * 100,
-          image_url: recipe.image_url,
           relevance: RANK_BASE + (
                                   (matched_ingredients_count.to_f * 10) + 
                                   (matched_ingredients_count.to_f / total_recipe_ingredients_count) * 1000).round,
@@ -287,7 +281,6 @@ class SearchRecipes
           class: 'olive',
           complete: true,
           completeness: 100,
-          image_url: recipe.image_url,
           relevance: RANK_BASE +  (matched_ingredients_count * 10) - 
                                   ((search_terms_count - matched_ingredients_count) * 10),
           ingredients: recipe_ingredients.as_json
@@ -316,7 +309,6 @@ class SearchRecipes
         class: '',
         complete: false,
         completeness: (matched_ingredients_count.to_f / total_recipe_ingredients_count).round(4) * 100,
-        image_url: recipe.image_url,
         relevance: RANK_BASE + (
                                 (matched_ingredients_count.to_f * 10) + 
                                 (matched_ingredients_count.to_f / total_recipe_ingredients_count) * 1000).round,

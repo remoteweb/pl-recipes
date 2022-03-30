@@ -8,7 +8,7 @@ class CreateRecipes < ActiveRecord::Migration[7.0]
       t.integer :prep_time
       t.integer :total_cooking_time
       t.decimal :ratings, precision: 4, scale: 2
-      t.string :recipy_category
+      t.string :recipe_category
       t.string :image_url
     end
   end

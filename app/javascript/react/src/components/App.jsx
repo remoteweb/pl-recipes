@@ -11,7 +11,7 @@ class App extends React.Component{
             gridDisplay: 'none',
             loading:false,
             recipes: [{
-                recipy: 1, 
+                recipe: 1, 
                 relevance: '',
                 ingredients: []
             }]
@@ -41,14 +41,14 @@ class App extends React.Component{
             )
 
         // this.setState({
-        //     recipes: [{"id": 3, "title": 'This is a test recipy'}]
+        //     recipes: [{"id": 3, "title": 'This is a test recipe'}]
         // })
     }
 
-    showRecipyCompletenessRibbon(complete){
+    showRecipeCompletenessRibbon(complete){
         if (complete == true) {
             return (
-                <a className='ui right olive ribbon label' style={{margin: '10px 0'}}>Complete Recipy</a>
+                <a className='ui right olive ribbon label' style={{margin: '10px 0'}}>Complete Recipe</a>
             )
         }
     }
@@ -85,9 +85,9 @@ class App extends React.Component{
                     <Grid.Column width={16}>
                         <Card.Group itemsPerRow={4}>
                         {
-                            this.state.recipes.map((recipy, recipyIndex) =>
-                                <Card key={recipyIndex} className={recipy.class}>
-                                    {/* <div style={{backgroundImage: `url(${recipy.image_url})`,
+                            this.state.recipes.map((recipe, recipeIndex) =>
+                                <Card key={recipeIndex} className={recipe.class}>
+                                    {/* <div style={{backgroundImage: `url(${recipe.image_url})`,
                                                 overflow: 'hidden',
                                                 borderRadius: 3,
                                                 border: 1,
@@ -97,15 +97,15 @@ class App extends React.Component{
                                                 margin: '0'}}>
                                     </div> */}
                                     <Card.Content>
-                                    <Card.Header>{recipy.title}</Card.Header>
+                                    <Card.Header>{recipe.title}</Card.Header>
                                     <Card.Meta>
-                                        <span className='date'>{recipy.recipy_category}</span><br />
-                                        <span className='date'>Rating {recipy.rating}</span>
+                                        <span className='date'>{recipe.recipe_category}</span><br />
+                                        <span className='date'>Rating {recipe.rating}</span>
                                     </Card.Meta>
-                                    {this.showRecipyCompletenessRibbon(recipy.complete)}                 
+                                    {this.showRecipeCompletenessRibbon(recipe.complete)}                 
                                     <Card.Description>
                                         {
-                                        recipy.ingredients.map((incredient, incredientIndex) => 
+                                        recipe.ingredients.map((incredient, incredientIndex) => 
                                             <div className='incredient' key={incredientIndex}>- {incredient.name}</div>
                                             )
                                         }
@@ -117,18 +117,18 @@ class App extends React.Component{
                                                 <Icon name='time' />
                                             </Grid.Column>
                                             <Grid.Column width={13}>
-                                                Preperation Time: {recipy.prep_time} <br/>
-                                                Cooking Time: {recipy.cook_time} <br/>
+                                                Preperation Time: {recipe.prep_time} <br/>
+                                                Cooking Time: {recipe.cook_time} <br/>
                                             </Grid.Column>
                                         </Grid>
                                         <Grid>
-                                            <Grid.Column width={2}>
-                                                <Icon name='info' />
+                                            <Grid.Column width={2} style={{color: '#cccccc9e'}}>
+                                                <Icon name='bug' />
                                             </Grid.Column>
-                                            <Grid.Column width={13}>
-                                                Matched Ingredients: {recipy.matched_ingredients_count} <br/>
-                                                Non Matched Ingredients: {recipy.non_matched_ingredients_count} <br/>
-                                                Completeness: {recipy.completeness} %<br/>
+                                            <Grid.Column width={13} style={{color: '#cccccc9e'}}>
+                                                Matched Ingredients: {recipe.matched_ingredients_count} <br/>
+                                                Non Matched Ingredients: {recipe.non_matched_ingredients_count} <br/>
+                                                Completeness: {recipe.completeness} %<br/>
                                             </Grid.Column>
                                         </Grid>
                                     </Card.Content>

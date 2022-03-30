@@ -2,9 +2,9 @@
 
 class ImportRecipes
   def initialize
-    Recipy.delete_all
+    Recipe.delete_all
     Ingredient.delete_all
-    RecipyIngredient.delete_all
+    RecipeIngredient.delete_all
   end
 
   def perform
@@ -13,26 +13,26 @@ class ImportRecipes
     # check for record.valid? of Rails while building the records_set
 
     recipes = JSON.load_file(Rails.root.join('public', 'recipes-english.json'))
-    recipes.each_with_index do |recipy, recipyIndex|
+    recipes.each_with_index do |recipe, recipeIndex|
       ## Heroku Dyno has 18000 mysql max_questions per hour.
       sleep ENV['IMPORT_RECPIPES_SQL_DELAY'].to_f if Rails.env.production?
 
-      @recipy = Recipy.create(
-        title: recipy['title'],
-        cook_time: recipy['cook_time'],
-        prep_time: recipy['prep_time'],
-        total_cooking_time: recipy['cook_time'] + recipy['prep_time'],
-        ratings: recipy['ratings'].to_f,
-        recipy_category: recipy['category'],
-        image_url: recipy['image']
+      @recipe = Recipe.create(
+        title: recipe['title'],
+        cook_time: recipe['cook_time'],
+        prep_time: recipe['prep_time'],
+        total_cooking_time: recipe['cook_time'] + recipe['prep_time'],
+        ratings: recipe['ratings'].to_f,
+        recipe_category: recipe['category'],
+        image_url: recipe['image']
       )
 
-      recipy['ingredients'].each_with_index do |ingredient, _ingredientIndex|
+      recipe['ingredients'].each_with_index do |ingredient, _ingredientIndex|
         ingredient = Ingredient.find_or_create_by(name: ingredient)
-        @recipy.ingredients << ingredient
+        @recipe.ingredients << ingredient
       end
 
-      puts "#{recipes.size - recipyIndex} records left"
+      puts "#{recipes.size - recipeIndex} records left"
     end
 
     # Benchmark
@@ -52,18 +52,18 @@ class ImportRecipes
     ingredientIndexOffset = 0
 
     recipes = JSON.load_file(Rails.root.join('public', 'recipes-english.json'))
-    recipes.each_with_index do |recipy, recipyIndex|
+    recipes.each_with_index do |recipe, recipeIndex|
       @ingredients = []
-      @recipy_ingrecients = []
+      @recipe_ingrecients = []
 
       ## Heroku Dyno has 18000 mysql max_questions per hour.
       sleep ENV['IMPORT_RECPIPES_SQL_DELAY'].to_f if Rails.env.production?
-      recipy['ingredients'].each.with_index(ingredientIndexOffset) do |ingredient, ingredientIndex|
+      recipe['ingredients'].each.with_index(ingredientIndexOffset) do |ingredient, ingredientIndex|
         @ingredients << { id: ingredientIndex, name: ingredient }
 
-        @recipy_ingrecients << {
+        @recipe_ingrecients << {
           id: ingredientIndexOffset,
-          recipy_id: recipyIndex,
+          recipe_id: recipeIndex,
           ingredient_id: ingredientIndex
         }
 
@@ -71,21 +71,21 @@ class ImportRecipes
       end
 
       @recipes << {
-        id: recipyIndex,
-        title: recipy['title'],
-        cook_time: recipy['cook_time'],
-        prep_time: recipy['prep_time'],
-        total_cooking_time: recipy['cook_time'] + recipy['prep_time'],
-        ratings: recipy['ratings'].to_f,
-        recipy_category: recipy['category'],
-        image_url: recipy['image']
+        id: recipeIndex,
+        title: recipe['title'],
+        cook_time: recipe['cook_time'],
+        prep_time: recipe['prep_time'],
+        total_cooking_time: recipe['cook_time'] + recipe['prep_time'],
+        ratings: recipe['ratings'].to_f,
+        recipe_category: recipe['category'],
+        image_url: recipe['image']
       }
 
       Ingredient.insert_all(@ingredients)
-      RecipyIngredient.insert_all(@recipy_ingrecients)
+      RecipeIngredient.insert_all(@recipe_ingrecients)
     end
 
-    Recipy.insert_all(@recipes)
+    Recipe.insert_all(@recipes)
 
     puts "#{recipes.size} recipes imported"
     # Benchmark
@@ -105,17 +105,17 @@ class ImportRecipes
     ingredientIndexOffset = 0
 
     recipes = JSON.load_file(Rails.root.join('public', 'recipes-english.json'))
-    recipes.each_with_index do |recipy, recipyIndex|
+    recipes.each_with_index do |recipe, recipeIndex|
       @ingredients = []
-      @recipy_ingrecients = []
+      @recipe_ingrecients = []
 
-      recipy['ingredients']
+      recipe['ingredients']
         .each.with_index(ingredientIndexOffset) do |ingredient, _ingredientIndex|
         @ingredients << { name: ingredient }
 
-        # @recipy_ingrecients << {
+        # @recipe_ingrecients << {
         #   id: ingredientIndexOffset,
-        #   recipy_id: recipyIndex,
+        #   recipe_id: recipeIndex,
         #   ingredient_id: ingredientIndex
         # }
 
@@ -123,22 +123,22 @@ class ImportRecipes
       end
 
       @recipes << {
-        id: recipyIndex,
-        title: recipy['title'],
-        cook_time: recipy['cook_time'],
-        prep_time: recipy['prep_time'],
-        total_cooking_time: recipy['cook_time'] + recipy['prep_time'],
-        ratings: recipy['ratings'].to_f,
-        recipy_category: recipy['category'],
-        image_url: recipy['image'],
+        id: recipeIndex,
+        title: recipe['title'],
+        cook_time: recipe['cook_time'],
+        prep_time: recipe['prep_time'],
+        total_cooking_time: recipe['cook_time'] + recipe['prep_time'],
+        ratings: recipe['ratings'].to_f,
+        recipe_category: recipe['category'],
+        image_url: recipe['image'],
         jsoningredients: @ingredients
       }
 
       # Ingredient.insert_all(@ingredients)
-      # RecipyIngredient.insert_all(@recipy_ingrecients)
+      # RecipeIngredient.insert_all(@recipe_ingrecients)
     end
 
-    Recipy.insert_all(@recipes)
+    Recipe.insert_all(@recipes)
 
     puts "#{recipes.size} recipes imported"
     # Benchmark

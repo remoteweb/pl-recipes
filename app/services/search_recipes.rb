@@ -24,7 +24,7 @@ class SearchRecipes
     ## Building the results
     ## Finds recipes including any of the ingredients in our discopal
 
-    recipes = Recipy.select do |r|
+    recipes = Recipe.select do |r|
       YAML.load(r.jsoningredients)
           .collect { |ingredient| ingredient[:name] }
           .select { |i| i.match(/#{search_terms.join('|')}/) }
@@ -32,77 +32,77 @@ class SearchRecipes
     end
 
     ## Scoring search results relevance
-    recipes.uniq.each do |recipy|
-      # recipy = Recipy.includes(:ingredients).where(id: recipy.id).first
-      recipy_ingredients = YAML.load(recipy.jsoningredients)
-      total_recipy_ingredients_count = recipy_ingredients.size
+    recipes.uniq.each do |recipe|
+      # recipe = Recipe.includes(:ingredients).where(id: recipe.id).first
+      recipe_ingredients = YAML.load(recipe.jsoningredients)
+      total_recipe_ingredients_count = recipe_ingredients.size
       search_terms_count = search_terms.size
 
-      matched_ingredients_count = YAML.load(recipy.jsoningredients)
+      matched_ingredients_count = YAML.load(recipe.jsoningredients)
                                       .collect { |ingredient| ingredient[:name] }
                                       .select { |i| i.match(/#{search_terms.join('|')}/) }.size
 
-      non_matched_ingredients_count = total_recipy_ingredients_count - matched_ingredients_count
+      non_matched_ingredients_count = total_recipe_ingredients_count - matched_ingredients_count
 
       ## RANK A are the results of recipes title or category include the word dinner
       ## and all ingredients get matched and the Recipes are complete.
 
       # NEGATIVE Factor How many ingredients left unused (search_terms_count - matched_ingredients_count
 
-      if recipy.title.include?('dinner') || 
-          recipy.recipy_category.include?('dinner') && 
-          matched_ingredients_count >= total_recipy_ingredients_count
+      if recipe.title.include?('dinner') || 
+          recipe.recipe_category.include?('dinner') && 
+          matched_ingredients_count >= total_recipe_ingredients_count
 
         rank_A << {
-          id: recipy.id,
-          title: recipy.title,
-          recipy_category: recipy.recipy_category,
-          rating: recipy.ratings.to_f,
-          prep_time: recipy.prep_time,
-          cook_time: recipy.cook_time,
-          time: recipy.total_cooking_time,
+          id: recipe.id,
+          title: recipe.title,
+          recipe_category: recipe.recipe_category,
+          rating: recipe.ratings.to_f,
+          prep_time: recipe.prep_time,
+          cook_time: recipe.cook_time,
+          time: recipe.total_cooking_time,
           matched_ingredients_count: matched_ingredients_count,
           non_matched_ingredients_count: non_matched_ingredients_count,
           class: 'olive',
           complete: true,
           completeness: 100,
-          image_url: recipy.image_url,
+          image_url: recipe.image_url,
           relevance: RANK_BASE +  (matched_ingredients_count * 10) - 
                                   ((search_terms_count - matched_ingredients_count) * 10),
-          ingredients: recipy_ingredients.as_json
+          ingredients: recipe_ingredients.as_json
         }
 
         next
       end
 
       ## RANK B are the results of recipes title or category include the word dinner 
-      ## and some of the recipy ingredients got matched.
+      ## and some of the recipe ingredients got matched.
       ## Recipes are ranked by their relevance score then by rating
 
-      # POSITIVE Factor How many ingredients from Recipy are matched. More better
-      # NEGATIVE Factor How many ingredients are missing for the recipy. Less better
+      # POSITIVE Factor How many ingredients from Recipe are matched. More better
+      # NEGATIVE Factor How many ingredients are missing for the recipe. Less better
 
-      if recipy.title.include?('dinner') || 
-          recipy.recipy_category.include?('dinner')
+      if recipe.title.include?('dinner') || 
+          recipe.recipe_category.include?('dinner')
           
         rank_B << {
-          id: recipy.id,
-          title: recipy.title,
-          recipy_category: recipy.recipy_category,
-          rating: recipy.ratings.to_f,
-          prep_time: recipy.prep_time,
-          cook_time: recipy.cook_time,
-          time: recipy.total_cooking_time,
+          id: recipe.id,
+          title: recipe.title,
+          recipe_category: recipe.recipe_category,
+          rating: recipe.ratings.to_f,
+          prep_time: recipe.prep_time,
+          cook_time: recipe.cook_time,
+          time: recipe.total_cooking_time,
           matched_ingredients_count: matched_ingredients_count,
           non_matched_ingredients_count: non_matched_ingredients_count,
           class: '',
           complete: false,
-          completeness: (matched_ingredients_count.to_f / total_recipy_ingredients_count).round(4) * 100,
-          image_url: recipy.image_url,
+          completeness: (matched_ingredients_count.to_f / total_recipe_ingredients_count).round(4) * 100,
+          image_url: recipe.image_url,
           relevance: RANK_BASE + (
                                   (matched_ingredients_count.to_f * 10) + 
-                                  (matched_ingredients_count.to_f / total_recipy_ingredients_count) * 1000).round,
-          ingredients: recipy_ingredients.as_json
+                                  (matched_ingredients_count.to_f / total_recipe_ingredients_count) * 1000).round,
+          ingredients: recipe_ingredients.as_json
         }
 
         next
@@ -111,54 +111,54 @@ class SearchRecipes
       ## RANK C are the results where all ingredients get matched and the Recipes are complete.
       # NEGATIVE Factor How many ingredients left unused (search_terms_count - matched_ingredients_count
 
-      if matched_ingredients_count >= total_recipy_ingredients_count
+      if matched_ingredients_count >= total_recipe_ingredients_count
         rank_C << {
-          id: recipy.id,
-          title: recipy.title,
-          recipy_category: recipy.recipy_category,
-          rating: recipy.ratings.to_f,
-          prep_time: recipy.prep_time,
-          cook_time: recipy.cook_time,
-          time: recipy.total_cooking_time,
+          id: recipe.id,
+          title: recipe.title,
+          recipe_category: recipe.recipe_category,
+          rating: recipe.ratings.to_f,
+          prep_time: recipe.prep_time,
+          cook_time: recipe.cook_time,
+          time: recipe.total_cooking_time,
           matched_ingredients_count: matched_ingredients_count,
           non_matched_ingredients_count: non_matched_ingredients_count,
           class: 'olive',
           complete: true,
           completeness: 100,
-          image_url: recipy.image_url,
+          image_url: recipe.image_url,
           relevance: RANK_BASE +  (matched_ingredients_count * 10) - 
                                   ((search_terms_count - matched_ingredients_count) * 10),
-          ingredients: recipy_ingredients.as_json
+          ingredients: recipe_ingredients.as_json
         }
 
         next
       end
 
-      ## RANK D are the results where some of the recipy ingredients got matched.
+      ## RANK D are the results where some of the recipe ingredients got matched.
       ## Those recipes are ranked by their completeness e.g. the lesser ingredients are missing the higher ranking
-      ## the recipy has.
+      ## the recipe has.
 
-      # POSITIVE Factor How many ingredients from Recipy are matched
-      # NEGATIVE Factor How many ingredients are missing for the recipy
+      # POSITIVE Factor How many ingredients from Recipe are matched
+      # NEGATIVE Factor How many ingredients are missing for the recipe
 
       rank_D << {
-        id: recipy.id,
-        title: recipy.title,
-        recipy_category: recipy.recipy_category,
-        rating: recipy.ratings.to_f,
-        prep_time: recipy.prep_time,
-        cook_time: recipy.cook_time,
-        time: recipy.total_cooking_time,
+        id: recipe.id,
+        title: recipe.title,
+        recipe_category: recipe.recipe_category,
+        rating: recipe.ratings.to_f,
+        prep_time: recipe.prep_time,
+        cook_time: recipe.cook_time,
+        time: recipe.total_cooking_time,
         matched_ingredients_count: matched_ingredients_count,
         non_matched_ingredients_count: non_matched_ingredients_count,
         class: '',
         complete: false,
-        completeness: (matched_ingredients_count.to_f / total_recipy_ingredients_count).round(4) * 100,
-        image_url: recipy.image_url,
+        completeness: (matched_ingredients_count.to_f / total_recipe_ingredients_count).round(4) * 100,
+        image_url: recipe.image_url,
         relevance: RANK_BASE + (
                                 (matched_ingredients_count.to_f * 10) + 
-                                (matched_ingredients_count.to_f / total_recipy_ingredients_count) * 1000).round,
-        ingredients: recipy_ingredients.as_json
+                                (matched_ingredients_count.to_f / total_recipe_ingredients_count) * 1000).round,
+        ingredients: recipe_ingredients.as_json
       }
     end
 
@@ -186,23 +186,23 @@ class SearchRecipes
 
     ## Building the results
     ## Finds recipes including any of the ingredients in our discopal
-    recipes = Recipy.joins(:ingredients)
+    recipes = Recipe.joins(:ingredients)
                     .where([sql_query_constructor('ingredients.name', 'LIKE', 'OR')] + @search_sql_params)
 
     ## Scoring search results relevance
-    recipes.uniq.each do |recipy|
-      # recipy = Recipy.includes(:ingredients).where(id: recipy.id).first
-      recipy_ingredients = recipy.ingredients
-      total_recipy_ingredients_count = recipy_ingredients.size
+    recipes.uniq.each do |recipe|
+      # recipe = Recipe.includes(:ingredients).where(id: recipe.id).first
+      recipe_ingredients = recipe.ingredients
+      total_recipe_ingredients_count = recipe_ingredients.size
       search_terms_count = search_terms.size
       # binding.pry
       # Negative Points
-      non_matched_ingredients_count = recipy_ingredients.where(
+      non_matched_ingredients_count = recipe_ingredients.where(
         [sql_query_constructor('ingredients.name', 'NOT LIKE', 'AND')] + @search_sql_params
       ).size
 
       # Positive Points
-      matched_ingredients_count = recipy_ingredients.where(
+      matched_ingredients_count = recipe_ingredients.where(
         [sql_query_constructor('name', 'LIKE', 'OR')] + @search_sql_params
       ).size
 
@@ -211,60 +211,60 @@ class SearchRecipes
 
       # NEGATIVE Factor How many ingredients left unused (search_terms_count - matched_ingredients_count
 
-      if recipy.title.include?('dinner') || 
-        recipy.recipy_category.include?('dinner') && 
-        matched_ingredients_count >= total_recipy_ingredients_count
+      if recipe.title.include?('dinner') || 
+        recipe.recipe_category.include?('dinner') && 
+        matched_ingredients_count >= total_recipe_ingredients_count
 
         rank_A << {
-          id: recipy.id,
-          title: recipy.title,
-          recipy_category: recipy.recipy_category,
-          rating: recipy.ratings.to_f,
-          prep_time: recipy.prep_time,
-          cook_time: recipy.cook_time,
-          time: recipy.total_cooking_time,
+          id: recipe.id,
+          title: recipe.title,
+          recipe_category: recipe.recipe_category,
+          rating: recipe.ratings.to_f,
+          prep_time: recipe.prep_time,
+          cook_time: recipe.cook_time,
+          time: recipe.total_cooking_time,
           matched_ingredients_count: matched_ingredients_count,
           non_matched_ingredients_count: non_matched_ingredients_count,
           class: 'olive',
           complete: true,
           completeness: 100,
-          image_url: recipy.image_url,
+          image_url: recipe.image_url,
           relevance: RANK_BASE +  (matched_ingredients_count * 10) - 
                                   ((search_terms_count - matched_ingredients_count) * 10),
-          ingredients: recipy_ingredients.as_json
+          ingredients: recipe_ingredients.as_json
         }
 
         next
       end
 
       ## RANK B are the results of recipes title or category include the word dinner 
-      ## and some of the recipy ingredients got matched.
+      ## and some of the recipe ingredients got matched.
       ## Recipes are ranked by their relevance score then by rating
 
-      # POSITIVE Factor How many ingredients from Recipy are matched. More better
-      # NEGATIVE Factor How many ingredients are missing for the recipy. Less better
+      # POSITIVE Factor How many ingredients from Recipe are matched. More better
+      # NEGATIVE Factor How many ingredients are missing for the recipe. Less better
 
-      if recipy.title.include?('dinner') || 
-          recipy.recipy_category.include?('dinner')
+      if recipe.title.include?('dinner') || 
+          recipe.recipe_category.include?('dinner')
           
         rank_B << {
-          id: recipy.id,
-          title: recipy.title,
-          recipy_category: recipy.recipy_category,
-          rating: recipy.ratings.to_f,
-          prep_time: recipy.prep_time,
-          cook_time: recipy.cook_time,
-          time: recipy.total_cooking_time,
+          id: recipe.id,
+          title: recipe.title,
+          recipe_category: recipe.recipe_category,
+          rating: recipe.ratings.to_f,
+          prep_time: recipe.prep_time,
+          cook_time: recipe.cook_time,
+          time: recipe.total_cooking_time,
           matched_ingredients_count: matched_ingredients_count,
           non_matched_ingredients_count: non_matched_ingredients_count,
           class: '',
           complete: false,
-          completeness: (matched_ingredients_count.to_f / total_recipy_ingredients_count).round(4) * 100,
-          image_url: recipy.image_url,
+          completeness: (matched_ingredients_count.to_f / total_recipe_ingredients_count).round(4) * 100,
+          image_url: recipe.image_url,
           relevance: RANK_BASE + (
                                   (matched_ingredients_count.to_f * 10) + 
-                                  (matched_ingredients_count.to_f / total_recipy_ingredients_count) * 1000).round,
-          ingredients: recipy_ingredients.as_json
+                                  (matched_ingredients_count.to_f / total_recipe_ingredients_count) * 1000).round,
+          ingredients: recipe_ingredients.as_json
         }
 
         next
@@ -273,54 +273,54 @@ class SearchRecipes
       ## RANK C are the results where all ingredients get matched and the Recipes are complete.
       # NEGATIVE Factor How many ingredients left unused (search_terms_count - matched_ingredients_count
 
-      if matched_ingredients_count >= total_recipy_ingredients_count
+      if matched_ingredients_count >= total_recipe_ingredients_count
         rank_C << {
-          id: recipy.id,
-          title: recipy.title,
-          recipy_category: recipy.recipy_category,
-          rating: recipy.ratings.to_f,
-          prep_time: recipy.prep_time,
-          cook_time: recipy.cook_time,
-          time: recipy.total_cooking_time,
+          id: recipe.id,
+          title: recipe.title,
+          recipe_category: recipe.recipe_category,
+          rating: recipe.ratings.to_f,
+          prep_time: recipe.prep_time,
+          cook_time: recipe.cook_time,
+          time: recipe.total_cooking_time,
           matched_ingredients_count: matched_ingredients_count,
           non_matched_ingredients_count: non_matched_ingredients_count,
           class: 'olive',
           complete: true,
           completeness: 100,
-          image_url: recipy.image_url,
+          image_url: recipe.image_url,
           relevance: RANK_BASE +  (matched_ingredients_count * 10) - 
                                   ((search_terms_count - matched_ingredients_count) * 10),
-          ingredients: recipy_ingredients.as_json
+          ingredients: recipe_ingredients.as_json
         }
 
         next
       end
 
-      ## RANK D are the results where some of the recipy ingredients got matched.
+      ## RANK D are the results where some of the recipe ingredients got matched.
       ## Those recipes are ranked by their completeness e.g. the lesser ingredients are missing the higher ranking
-      ## the recipy has.
+      ## the recipe has.
 
-      # POSITIVE Factor How many ingredients from Recipy are matched
-      # NEGATIVE Factor How many ingredients are missing for the recipy
+      # POSITIVE Factor How many ingredients from Recipe are matched
+      # NEGATIVE Factor How many ingredients are missing for the recipe
 
       rank_D << {
-        id: recipy.id,
-        title: recipy.title,
-        recipy_category: recipy.recipy_category,
-        rating: recipy.ratings.to_f,
-        prep_time: recipy.prep_time,
-        cook_time: recipy.cook_time,
-        time: recipy.total_cooking_time,
+        id: recipe.id,
+        title: recipe.title,
+        recipe_category: recipe.recipe_category,
+        rating: recipe.ratings.to_f,
+        prep_time: recipe.prep_time,
+        cook_time: recipe.cook_time,
+        time: recipe.total_cooking_time,
         matched_ingredients_count: matched_ingredients_count,
         non_matched_ingredients_count: non_matched_ingredients_count,
         class: '',
         complete: false,
-        completeness: (matched_ingredients_count.to_f / total_recipy_ingredients_count).round(4) * 100,
-        image_url: recipy.image_url,
+        completeness: (matched_ingredients_count.to_f / total_recipe_ingredients_count).round(4) * 100,
+        image_url: recipe.image_url,
         relevance: RANK_BASE + (
                                 (matched_ingredients_count.to_f * 10) + 
-                                (matched_ingredients_count.to_f / total_recipy_ingredients_count) * 1000).round,
-        ingredients: recipy_ingredients.as_json
+                                (matched_ingredients_count.to_f / total_recipe_ingredients_count) * 1000).round,
+        ingredients: recipe_ingredients.as_json
       }
     end
 

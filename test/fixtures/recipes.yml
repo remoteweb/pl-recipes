@@ -1,17 +1,17 @@
-valid_recipy:
-  title: Valid Recipy
+valid_recipe:
+  title: Valid Recipe
   cook_time: 1
   prep_time: 1
   total_cooking_time: 1
   ratings: 9.99
-  recipy_category: MyString
+  recipe_category: MyString
   image_url: https://upload.wikimedia.org/wikipedia/commons/2/20/Bacon_%281%29.jpg
 
-invalid_recipy:
-  title: Invalid Recipy
+invalid_recipe:
+  title: Invalid Recipe
   cook_time: 1
   prep_time: 1
   total_cooking_time: 1
   ratings: 9.99
-  recipy_category: MyString
+  recipe_category: MyString
   image_url: MyString

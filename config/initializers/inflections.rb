@@ -16,6 +16,6 @@
 # end
 
 ActiveSupport::Inflector.inflections do |inflect|
-  inflect.irregular 'recipy', 'recipes'
-  inflect.irregular 'recipy_ingredient', 'recipy_ingredients'
+  inflect.irregular 'recipe', 'recipes'
+  inflect.irregular 'recipe_ingredient', 'recipe_ingredients'
 end

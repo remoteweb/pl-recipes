@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-class CreateRecipyIngredients < ActiveRecord::Migration[7.0]
+class CreateRecipeIngredients < ActiveRecord::Migration[7.0]
   def change
-    create_table :recipy_ingredients do |t|
+    create_table :recipe_ingredients do |t|
       t.references :ingredient, null: false
-      t.references :recipy, null: false
+      t.references :recipe, null: false
     end
   end
 end

@@ -8,12 +8,12 @@ https://pl-recipes-achamakiotis.herokuapp.com/
 Stack:
 - Ruby 3.1.1
 - Rails 7.0
-- MySQL 8.0.28 (gem 0.5.3)
+- MySQL (gem 0.5.3)
 - React 17.0.2
 - ReactDom 17.0.2
 - Minitest 5.15.0
 
-_Deployed on basic Heroku dyno with ClearDB_
+_Deployed on hobby Heroku dyno with ClearDB_
 
 
 | Feature |

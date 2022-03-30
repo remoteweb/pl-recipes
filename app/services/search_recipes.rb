@@ -12,10 +12,10 @@ class SearchRecipes
 
     search_terms = @search_terms.split(',')
 
-    # unless Rails.cache.read(search_terms).blank?
-    #   puts 'Cached Results'
-    #   return Rails.cache.read(search_terms)
-    # end
+    unless Rails.cache.read(search_terms).blank?
+      Rails.logger.info('Cached Results')
+      return Rails.cache.read(search_terms)
+    end
 
     first_stage_results = {}
     final_results = []
@@ -29,12 +29,11 @@ class SearchRecipes
 
     ## Building the results
     ## Finds recipes including any of the ingredients in our discopal
-  
-    # recipes = Rails.cache.fetch('all_recipes', expires_in: 1.day) do
-    #   Recipe.all
-    # end
+    recipes = Rails.cache.fetch('all_recipes', expires_in: 1.day) do
+      Recipe.all
+    end
 
-    recipes = Recipe.select do |r|
+    recipes = recipes.select do |r|
       YAML.load(r.jsoningredients)
           .collect { |ingredient| ingredient[:name] }
           .select { |i| i.match(/#{search_terms.join('|')}/) }
@@ -175,9 +174,9 @@ class SearchRecipes
               rank_C.sort_by { |r| [-r[:relevance], -r[:rating]] } +
               rank_D.sort_by { |r| [-r[:relevance], -r[:rating]] }).take(100)
 
-    # Rails.cache.write(search_terms, result)
+    Rails.cache.write(search_terms, result)
 
-    # result
+    result
   end
 
   ## This is my initial iteration, i kept it only for the assigment purposes

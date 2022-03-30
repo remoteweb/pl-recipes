@@ -18,9 +18,9 @@ _Deployed on basic Heroku dyno with ClearDB_
 
 | Feature |
 | ------ |
-| Search Recipes |
+| _Search Recipes:_ |
 | As a guest user i want to be able to make a search with one or multiple ingredients and get relevant recipes. |
-| Acceptance |
+| _Acceptance:_ |
 | Given i am a guest user, when i open the home page, system should show me a search input. Once i enter one or multiple ingredients and click enter, the system should show recipes matched my criteria and ordered by a relevance score and ratings |
 
 # Data Structure

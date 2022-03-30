@@ -63,19 +63,20 @@ class App extends React.Component{
                 <Grid>
                     <Grid.Column width={8} style={{marginTop: 20}} className='centered'>
                         <Header as='h1'>
-                            Welcome to Recipes Finder v0.9
+                            Welcome to PrepareDinner v0.1-beta
                             <Header.Subheader>
-                            Make your search with the ingredients you have.
-                            For multiple ingredients, please use comma separated words.
+                            Type your search to find relevant recipes for given ingredients.
+                            For multiple ingredients use comma separated words.
                             </Header.Subheader>
                         </Header>
                         <Input
                             id='search-input'
-                            ref={this.searchInput}
+                            ref={this.searchInput }
                             size='huge'
                             fluid icon='search' 
-                            placeholder='Search...'
+                            placeholder='eggs,bacon,bread'
                             loading={this.state.loading}
+                            onChange={e => this.updateInput(e)}
                             onKeyDown={e => this.handleKeyDown(e)}
                         />
                     </Grid.Column>

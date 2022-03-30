@@ -1,4 +1,4 @@
-# DinnerRecipes v0.1-beta
+# PrepareDinner v0.1-beta
 [![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://travis-ci.org/joemccann/dillinger)
 Recipes Finder v0.9 is an awesome app offering users to search through relevant recipes for dinner, based on the available ingredients currently at home.
 
@@ -8,8 +8,8 @@ https://pl-recipes-achamakiotis.herokuapp.com/
 Stack:
 - Ruby 3.1.1
 - Rails 7.0
-- React 17.0.2
 - MySQL 8.0.28 (gem 0.5.3)
+- React 17.0.2
 - ReactDom 17.0.2
 - Minitest 5.15.0
 

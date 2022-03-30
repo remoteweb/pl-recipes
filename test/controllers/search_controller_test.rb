@@ -22,7 +22,7 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
       @result = SearchRecipes.new(@search_params).perform_json
     end.round(2)
     puts "#{time_spent} seconds"
-    assert time_spent < 5
+    assert time_spent < 10
   end
 
   test 'Test search results relevance' do

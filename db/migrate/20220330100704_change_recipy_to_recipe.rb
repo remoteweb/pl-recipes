@@ -1,4 +1,4 @@
-class ChangeRecipeToRecipe < ActiveRecord::Migration[7.0]
+class ChangeRecipyToRecipe < ActiveRecord::Migration[7.0]
   def change
     rename_table :recipe_ingredients, :recipe_ingredients
     rename_column :recipe_ingredients, :recipe_id, :recipe_id

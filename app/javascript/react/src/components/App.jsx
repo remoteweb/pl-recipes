@@ -86,7 +86,7 @@ class App extends React.Component{
                         {
                             this.state.recipes.map((recipy, recipyIndex) =>
                                 <Card key={recipyIndex} className={recipy.class}>
-                                    <div style={{backgroundImage: `url(${recipy.image_url})`,
+                                    {/* <div style={{backgroundImage: `url(${recipy.image_url})`,
                                                 overflow: 'hidden',
                                                 borderRadius: 3,
                                                 border: 1,
@@ -94,10 +94,11 @@ class App extends React.Component{
                                                 backgroundSize: 'cover', 
                                                 height: 140,
                                                 margin: '0'}}>
-                                    </div>
+                                    </div> */}
                                     <Card.Content>
                                     <Card.Header>{recipy.title}</Card.Header>
                                     <Card.Meta>
+                                        <span className='date'>{recipy.recipy_category}</span><br />
                                         <span className='date'>Rating {recipy.rating}</span>
                                     </Card.Meta>
                                     {this.showRecipyCompletenessRibbon(recipy.complete)}                 
@@ -127,7 +128,6 @@ class App extends React.Component{
                                                 Matched Ingredients: {recipy.matched_ingredients_count} <br/>
                                                 Non Matched Ingredients: {recipy.non_matched_ingredients_count} <br/>
                                                 Completeness: {recipy.completeness} %<br/>
-                                                Relevance: {recipy.relevance} <br/>
                                             </Grid.Column>
                                         </Grid>
                                     </Card.Content>

@@ -56,6 +56,7 @@ class SearchRecipes
         rank_A << {
           id: recipy.id,
           title: recipy.title,
+          recipy_category: recipy.recipy_category,
           rating: recipy.ratings.to_f,
           prep_time: recipy.prep_time,
           cook_time: recipy.cook_time,
@@ -87,6 +88,7 @@ class SearchRecipes
         rank_B << {
           id: recipy.id,
           title: recipy.title,
+          recipy_category: recipy.recipy_category,
           rating: recipy.ratings.to_f,
           prep_time: recipy.prep_time,
           cook_time: recipy.cook_time,
@@ -113,6 +115,7 @@ class SearchRecipes
         rank_C << {
           id: recipy.id,
           title: recipy.title,
+          recipy_category: recipy.recipy_category,
           rating: recipy.ratings.to_f,
           prep_time: recipy.prep_time,
           cook_time: recipy.cook_time,
@@ -141,6 +144,7 @@ class SearchRecipes
       rank_D << {
         id: recipy.id,
         title: recipy.title,
+        recipy_category: recipy.recipy_category,
         rating: recipy.ratings.to_f,
         prep_time: recipy.prep_time,
         cook_time: recipy.cook_time,
@@ -214,6 +218,7 @@ class SearchRecipes
         rank_A << {
           id: recipy.id,
           title: recipy.title,
+          recipy_category: recipy.recipy_category,
           rating: recipy.ratings.to_f,
           prep_time: recipy.prep_time,
           cook_time: recipy.cook_time,
@@ -245,6 +250,7 @@ class SearchRecipes
         rank_B << {
           id: recipy.id,
           title: recipy.title,
+          recipy_category: recipy.recipy_category,
           rating: recipy.ratings.to_f,
           prep_time: recipy.prep_time,
           cook_time: recipy.cook_time,
@@ -271,6 +277,7 @@ class SearchRecipes
         rank_C << {
           id: recipy.id,
           title: recipy.title,
+          recipy_category: recipy.recipy_category,
           rating: recipy.ratings.to_f,
           prep_time: recipy.prep_time,
           cook_time: recipy.cook_time,
@@ -299,6 +306,7 @@ class SearchRecipes
       rank_D << {
         id: recipy.id,
         title: recipy.title,
+        recipy_category: recipy.recipy_category,
         rating: recipy.ratings.to_f,
         prep_time: recipy.prep_time,
         cook_time: recipy.cook_time,

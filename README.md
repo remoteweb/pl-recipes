@@ -73,22 +73,31 @@ rake import_recipes\["json"\]
 
 
 
-# Tests Pass
+<!-- # Heroku Test Pass
 
 ```
-Running rake db:migrate RAILS_ENV=test && rake test on ⬢ pl-recipes-achamakiotis... up, run.2938 (Hobby)
-Running 3 tests in a single process (parallelization threshold is 50)
-Run options: --seed 48841
+``` -->
+
+# Local Test Pass
+
+```
+Running 4 tests in a single process (parallelization threshold is 50)
+Run options: --seed 46295
 
 # Running:
 
-Importing Records is taking:
+..Importing Records is taking:
 10013 recipes imported
-  3.508000   0.184000   3.692000 (  4.218358)
-Search is taking:
-  4.940000   0.152000   5.092000 (  5.199995)
-...
+1.55 seconds
+Test search results relevance
+.Importing Records is taking:
+10013 recipes imported
+1.5 seconds
+Test search results performance
+Search for bacon,eggs,cucumber,potato is taking:
+1.76 seconds
+.
 
-Finished in 9.735734s, 0.3081 runs/s, 0.7190 assertions/s.
-3 runs, 7 assertions, 0 failures, 0 errors, 0 skips
+Finished in 6.871504s, 0.5821 runs/s, 1.1642 assertions/s.
+4 runs, 8 assertions, 0 failures, 0 errors, 0 skips
 ```

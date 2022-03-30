@@ -9,7 +9,7 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
     puts 'Importing Records is taking:'
     puts Benchmark.realtime {
       ImportRecipes.new.perform_json
-    }.round(2).to_s + " seconds"
+    }.round(2).to_s + ' seconds'
   end
 
   test 'Test search results performance' do
@@ -17,11 +17,11 @@ class SearchControllerTest < ActionDispatch::IntegrationTest
     @search_params = 'bacon,eggs,cucumber,potato'
 
     puts "Search for #{@search_params} is taking:"
-    
-    time_spent = Benchmark.realtime {
+
+    time_spent = Benchmark.realtime do
       @result = SearchRecipes.new(@search_params).perform_json
-    }.round(2) 
-    puts time_spent.to_s + " seconds"
+    end.round(2)
+    puts "#{time_spent} seconds"
     assert time_spent < 5
   end
 
